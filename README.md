@@ -2,10 +2,10 @@
 
 PHP implementation of [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
 
-## How to run application
+## How to run the application
 
 ```
-php run.php game:run -i input.xml -o output.xm
+php bin/console game:run -i input.xml -o output.xml
 ```
 
 Parameter ```-i``` is optional, default value is ```input.xml```.

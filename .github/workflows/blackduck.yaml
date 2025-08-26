@@ -11,6 +11,7 @@ on:
 jobs:
   # A job to execute a blackduck scan
   blackduck:
+    if: ${{ secrets.BLACKDUCK_API_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

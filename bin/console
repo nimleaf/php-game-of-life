@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+/**
+ * Game of Life CLI entry point.
+ *
+ * This script starts the Symfony Console application and registers
+ * the RunSimulationCommand, which allows running the Game of Life
+ * simulation from the command line.
+ *
+ * Usage:
+ *   php bin/console game:run --input=input.xml --output=output.xml
+ */
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use App\Infrastructure\Cli\RunSimulationCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application('Game of Life', '1.0.0');
+
+// Add the CLI command that runs the simulation
+$application->add(new RunSimulationCommand());
+
+// Run the application and catch any exceptions
+try {
+    $application->run();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}

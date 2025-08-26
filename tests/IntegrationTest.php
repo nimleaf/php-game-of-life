@@ -1,11 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace Tests\Life;
+namespace Tests\App;
 
+use App\Infrastructure\Cli\RunSimulationCommand;
 use DOMDocument;
-use Life\RunGameCommand;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use function array_map;
 use function file_exists;
@@ -16,13 +17,16 @@ final class IntegrationTest extends TestCase
 {
     private const OUTPUT_FILE = 'output.xml';
 
-
     /**
      * @dataProvider getInputAndExpectedOutputFiles
      */
     public function testGame(string $inputFile, string $expectedOutputFile): void
     {
-        $commandTester = new CommandTester(new RunGameCommand());
+        $application = new Application();
+        $application->add(new RunSimulationCommand());
+
+        $command = $application->find('game:run');
+        $commandTester = new CommandTester($command);
 
         $commandTester->execute(
             [
@@ -31,7 +35,7 @@ final class IntegrationTest extends TestCase
             ]
         );
 
-        $output = $this->loadXmlForComparison(self::OUTPUT_FILE);
+        $output = $this->loadXmlForComparison();
 
         Assert::assertXmlStringEqualsXmlFile(
             $expectedOutputFile,
@@ -55,12 +59,12 @@ final class IntegrationTest extends TestCase
     }
 
 
-    private function loadXmlForComparison(string $filePath): string
+    private function loadXmlForComparison(): string
     {
         $dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $dom->load($filePath);
+        $dom->load(self::OUTPUT_FILE);
 
         return $dom->saveXML();
     }

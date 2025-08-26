@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Life;
+namespace App\Infrastructure\IO\Exception;
 
 use Exception;
 
